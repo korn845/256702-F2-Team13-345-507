@@ -104,7 +104,7 @@
 - หากมีต้นแบบซอฟต์แวร์ (Prototype) หรือโค้ดตัวอย่างที่ใช้เป็นแบบอ้างอิง ให้ระบุชื่อโปรเจกต์/ลิงก์เอาไว้
 - ใส่ข้อมูลแหล่งเรียนรู้ที่ใช้อ้างอิง เช่น เว็บไซต์ ตำรา หรือวิดีโอสอนต่าง ๆ
 
-**ตัวอย่าง**
+เอกสารอ้างอิง
 
 - FXGL Tutorial: [https://github.com/AlmasB/FXGL/wiki/FXGL-11](https://github.com/AlmasB/FXGL/wiki/FXGL-11)
 - JavaFX Documentation: [https://openjfx.io/](https://openjfx.io/)
