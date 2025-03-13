@@ -112,3 +112,5 @@
 - มอนจะขยับยังไง https://stackoverflow.com/questions/30044870/tower-defense-game-moving-the-enemies-on-the-screen
 - คำนวณวิถีกระสุน https://stackoverflow.com/questions/50255929/tower-defense-bullet-math
 
+งานนำเสนอ
+https://www.canva.com/design/DAGhauw1ILA/mFspp8oLcBjjJQ_yRsH56w/view?utm_content=DAGhauw1ILA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h51a1fb10b0
