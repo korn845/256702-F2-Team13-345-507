@@ -1,6 +1,7 @@
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\App.java
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\GameController.java
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\Enemy.java
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\Projectile.java
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\Army.java
-D:\Project\256702-F2-Team13-345-507\G\src\main\java\StartButton.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\Enemy.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\GameMap.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\StartButton.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\App.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\GameController.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\Projectile.java
+D:\Project\256702-F2-Team13-345-507\G\src\main\java\com\lab\Army.java
