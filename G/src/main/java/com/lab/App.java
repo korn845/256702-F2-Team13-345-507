@@ -10,9 +10,12 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private Sound sound; // Class-level variable for Sound
+
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
+        sound = new Sound(); // Use the class-level variable
 
         // Create the START button
         Button startButton = new Button("START");
@@ -27,22 +30,31 @@ public class App extends Application {
         exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 
         // Create a VBox to hold the buttons and style it
-        VBox buttonsVBox = new VBox(15, startButton, settingsButton, exitButton); // 10 is the spacing between buttons
-        buttonsVBox.setAlignment(Pos.CENTER_LEFT); // Align buttons to the left
-        buttonsVBox.setStyle("-fx-padding: 15; -fx-background-color: #333333;"); // Add padding and background color
+        VBox buttonsVBox = new VBox(15, startButton, settingsButton, exitButton); // 15 is spacing
+        buttonsVBox.setAlignment(Pos.CENTER_LEFT);
+        buttonsVBox.setStyle("-fx-padding: 15; -fx-background-color: #333333;");
 
         // Add the VBox to the left side of the BorderPane
         root.setLeft(buttonsVBox);
 
-        // Set the action for the START button to display the game map
+        // Play background music
+        sound.playBackgroundMusic();
+        primaryStage.setOnCloseRequest(event -> sound.stopBackgroundMusic());
+
+        // Set action for the START button
         startButton.setOnAction(event -> {
-            GameMap gameMap = new GameMap();
-            root.setCenter(gameMap.getMapPane()); // Display the game map in the center
+            GameMap gameMap = new GameMap(); // Ensure GameMap exists
+            root.setCenter(gameMap.getMapPane());
         });
 
-        // Set the action for the EXIT button to close the application
+        // Set action for the SETTINGS button (open a new window)
+        settingsButton.setOnAction(event -> {
+            SettingsWindow.display(); // Use display() to open the settings window
+        });
+
+        // Set action for the EXIT button
         exitButton.setOnAction(event -> {
-            primaryStage.close(); // Close the application
+            primaryStage.close();
         });
 
         // Create and set the scene
@@ -54,5 +66,9 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Sound getSound() {
+        return sound;
     }
 }
