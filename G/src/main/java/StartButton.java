@@ -23,7 +23,7 @@ public class StartButton {
         Pane gameRoot = gameController.getGamePane();
 
         Scene gameScene = new Scene(gameRoot, 800, 600);
-        primaryStage.setTitle("Tower Defense Game");
+        primaryStage.setTitle("Inferno&Tide");
         primaryStage.setScene(gameScene);
         primaryStage.show();
 
