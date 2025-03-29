@@ -1,4 +1,4 @@
-package game;
+package com.lab;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

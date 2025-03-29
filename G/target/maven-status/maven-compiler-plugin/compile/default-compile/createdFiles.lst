@@ -1,6 +1,6 @@
+com\lab\Projectile.class
+com\lab\Army.class
 com\lab\App.class
-game\src\main\java\Army.class
-game\src\main\java\Projectile.class
 com\lab\StartButton.class
-game\src\main\java\Enemy.class
+com\lab\Enemy.class
 com\lab\GameController.class
