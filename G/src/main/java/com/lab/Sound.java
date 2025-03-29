@@ -12,9 +12,9 @@ public class Sound {
 
     public void playBackgroundMusic() {
         try {
-            String musicFile = getClass().getResource("/sounds/Oneway.wav").toExternalForm(); // Use resource path
-            Media sound = new Media(musicFile);
-            mediaPlayer = new MediaPlayer(sound);
+            String musicFile = "/sounds/Oneway.wav";
+            Media sound = new Media(getClass().getResource(musicFile).toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the music
             mediaPlayer.play();
         } catch (Exception e) {
