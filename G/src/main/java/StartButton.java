@@ -1,4 +1,4 @@
-package com.lab;
+package game;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
