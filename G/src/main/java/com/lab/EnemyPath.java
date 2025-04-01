@@ -1,15 +1,17 @@
 package com.lab;
 
+import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnemyPath {
-    private List<Point2D> pathPoints;
-    private double width;  // Maximum width of the screen
-    private double height; // Maximum height of the screen
+    private List<Point2D> pathPoints; // เก็บจุดทั้งหมดในเส้นทาง
+    private double width;  // ความกว้างของหน้าจอ
+    private double height; // ความสูงของหน้าจอ
 
     public EnemyPath(double width, double height) {
         this.width = width;
@@ -17,9 +19,8 @@ public class EnemyPath {
         pathPoints = new ArrayList<>();
     }
 
-    // Add a point to the path (with boundary check)
+    // เพิ่มจุดในเส้นทาง (พร้อมตรวจสอบขอบเขต)
     public void addPoint(double x, double y) {
-        // Ensure the point is within the screen bounds
         if (x >= 0 && x <= width && y >= 0 && y <= height) {
             pathPoints.add(new Point2D(x, y));
         } else {
@@ -27,37 +28,38 @@ public class EnemyPath {
         }
     }
 
-    // Get the list of points
+    // ดึงรายการจุดทั้งหมดในเส้นทาง
     public List<Point2D> getPathPoints() {
         return pathPoints;
     }
 
-    // Generate a Polyline for visualization
+    // สร้าง Polyline สำหรับแสดงผลเส้นทาง
     public Polyline getPathPolyline() {
         Polyline polyline = new Polyline();
         for (Point2D point : pathPoints) {
             polyline.getPoints().addAll(point.getX(), point.getY());
         }
-        polyline.setStrokeWidth(2);
-        polyline.setStyle("-fx-stroke: red; -fx-stroke-dash-array: 5 5;"); // Dashed red line
+        polyline.setStroke(Color.TRANSPARENT);
+        polyline.setFill(null);
         return polyline;
     }
 
-    // Generate a fixed path for the enemy
+    // สร้างเส้นทางเริ่มต้นจากซ้ายไปขวา
     public static EnemyPath generateEnemyPath(double width, double height) {
         EnemyPath enemyPath = new EnemyPath(width, height);
 
-        // Starting point: middle-left
-        enemyPath.addPoint(0, height / 2);
+        // กำหนดจุดในเส้นทาง
+        enemyPath.addPoint(0, 300);      // Start
+        enemyPath.addPoint(200, 300);    // Right
+        enemyPath.addPoint(200, 100);    // Up
+        enemyPath.addPoint(400, 100);    // Right
+        enemyPath.addPoint(400, 500);    // Down
+        enemyPath.addPoint(600, 500);    // Right
+        enemyPath.addPoint(600, 300);    // Up
+        enemyPath.addPoint(800, 300);    // End
 
-        // Fixed points along the path
-        enemyPath.addPoint(200, height / 2);       // Move right
-        enemyPath.addPoint(200, height - 200);    // Move down
-        enemyPath.addPoint(width - 200, height - 200); // Move right
-        enemyPath.addPoint(width - 200, 200);     // Move up
-
-        // Ending point: middle-right
-        enemyPath.addPoint(width, 200);
+        // แสดงเส้นทางใน FXGL GameScene
+        FXGL.getGameScene().addUINode(enemyPath.getPathPolyline());
 
         return enemyPath;
     }

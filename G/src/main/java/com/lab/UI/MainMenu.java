@@ -1,47 +1,109 @@
 package com.lab.UI;
 
+import com.lab.GameLevel;
 import com.lab.GamePlay;
-import javafx.geometry.Pos;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
 
 public class MainMenu {
-
     public static void showMainMenu(Stage primaryStage) {
-        VBox menuLayout = new VBox(20); // ระยะห่างระหว่างปุ่ม
-        menuLayout.setAlignment(Pos.CENTER);
-
-        // เล่นเพลงพื้นหลัง
-        Sound.playBackgroundMusic(); // เรียกใช้เพลงพื้นหลัง
-
-        // ปุ่มเริ่มเกม
-        Button startButton = new Button("Start Game");
-        startButton.setStyle("-fx-font-size: 20px; -fx-padding: 10px;");
-        startButton.setOnAction(event -> {
+        try {
             GamePlay gamePlay = new GamePlay();
-            try {
-                gamePlay.start(primaryStage); // เริ่มเกม
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            
+            // Add tower selection bar
+            TowerSelectionBar towerBar = new TowerSelectionBar(gamePlay.getGamePane(), gamePlay);
+            
+            // สร้างปุ่ม Start Game ในหน้าเกมแรก
+            Button startButton = new Button("Start Game");
+            startButton.setStyle("-fx-font-size: 24px; -fx-padding: 15px 30px;");
+            startButton.setLayoutX(300);
+            startButton.setLayoutY(250);
+            
+            Text countdownText = new Text("30");
+            countdownText.setStyle("-fx-font-size: 40px; -fx-fill: white;");
+            countdownText.setLayoutX(380);
+            countdownText.setLayoutY(200);
+            
+            gamePlay.getGamePane().getChildren().addAll(startButton, countdownText);
+            
+            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                int timeLeft = Integer.parseInt(countdownText.getText()) - 1;
+                countdownText.setText(String.valueOf(timeLeft));
+                if (timeLeft <= 0) {
+                    gamePlay.getGamePane().getChildren().removeAll(startButton, countdownText);
+                    gamePlay.startWave();
+                }
+            }));
+            countdown.setCycleCount(30);
+            
+            startButton.setOnAction(e -> {
+                countdown.stop();
+                gamePlay.getGamePane().getChildren().removeAll(startButton, countdownText);
+                gamePlay.startWave();
+            });
+            
+            // Start the game
+            gamePlay.startGame(primaryStage);
+            countdown.play();
+            
+        } catch (Exception e) {
+            System.err.println("Error showing main menu: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private static void startGame(Stage primaryStage) {
+        try {
+            GamePlay gamePlay = new GamePlay();
+            
+            // Add tower selection bar
+            // Add tower selection bar
+            new TowerSelectionBar(gamePlay.getGamePane(), gamePlay);
+            
+            Button startWaveButton = new Button("Start Wave");
+            startWaveButton.setStyle("-fx-font-size: 20px; -fx-padding: 10px;");
+            startWaveButton.setLayoutX(350);
+            startWaveButton.setLayoutY(250);
 
-        // ปุ่มออกจากเกม
-        Button exitButton = new Button("Exit");
-        exitButton.setStyle("-fx-font-size: 20px; -fx-padding: 10px;");
-        exitButton.setOnAction(event -> {
-            primaryStage.close(); // ปิดโปรแกรม
-        });
+            Text countdownText = new Text("30");
+            countdownText.setStyle("-fx-font-size: 40px; -fx-fill: white;");
+            countdownText.setLayoutX(380);
+            countdownText.setLayoutY(200);
 
-        // เพิ่มปุ่มทั้งหมดลงใน VBox
-        menuLayout.getChildren().addAll(startButton, exitButton);
+            gamePlay.getGamePane().getChildren().addAll(startWaveButton, countdownText);
 
-        // สร้าง Scene สำหรับเมนูหลัก
-        Scene mainMenuScene = new Scene(menuLayout, 800, 600);
-        primaryStage.setScene(mainMenuScene);
-        primaryStage.setTitle("Main Menu");
-        primaryStage.show();
+            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                int timeLeft = Integer.parseInt(countdownText.getText()) - 1;
+                countdownText.setText(String.valueOf(timeLeft));
+                if (timeLeft <= 0) {
+                    gamePlay.getGamePane().getChildren().removeAll(startWaveButton, countdownText);
+                    gamePlay.startWave();
+                }
+            }));
+            countdown.setCycleCount(30);
+
+            startWaveButton.setOnAction(e -> {
+                countdown.stop();
+                gamePlay.getGamePane().getChildren().removeAll(startWaveButton, countdownText);
+                gamePlay.startWave();
+            });
+
+            // Start the game after setting up all UI elements
+            gamePlay.startGame(primaryStage);
+            countdown.play();
+            
+        } catch (Exception e) {
+            System.err.println("Error starting game: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

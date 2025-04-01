@@ -24,7 +24,6 @@ public class Enemy {
         enemyView.setFitHeight(40);
     }
 
-    // Getter สำหรับ ImageView ของศัตรู
     public ImageView getView() {
         return enemyView;
     }
