@@ -315,34 +315,12 @@ public class GamePlay {
         gameOverText.setLayoutX(250);
         gameOverText.setLayoutY(250);
         
-        // สร้างปุ่มกลับไปเมนูหลัก
-        javafx.scene.control.Button backToMenuButton = new javafx.scene.control.Button("Back to Main Menu");
-        backToMenuButton.setStyle("-fx-font-size: 20px; -fx-padding: 10px;");
-        backToMenuButton.setLayoutX(300);
-        backToMenuButton.setLayoutY(350);
-        
         // เพิ่มองค์ประกอบลงใน Pane
-        gameOverPane.getChildren().addAll(gameOverText, backToMenuButton);
+        gameOverPane.getChildren().addAll(gameOverText);
+        
         
         // สร้าง Scene และแสดงผล
         Scene gameOverScene = new Scene(gameOverPane, 800, 600);
         primaryStage.setScene(gameOverScene);
-        
-        // เมื่อกดปุ่มกลับไปเมนูหลัก
-        backToMenuButton.setOnAction(e -> {
-            // Create new instance of Application and start it
-            Application startScreen = new Application() {
-                @Override
-                public void start(Stage stage) {
-                    // Initialize start screen here
-                }
-            };
-            try {
-                startScreen.start(primaryStage);
-            } catch (Exception ex) {
-                System.err.println("Error starting menu screen: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        });
     }
 }
