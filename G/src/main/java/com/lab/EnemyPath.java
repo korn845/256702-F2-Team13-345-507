@@ -4,9 +4,18 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
-
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.LineTo;
+import javafx.animation.PathTransition;
+import javafx.util.Duration;
+import javafx.scene.layout.Pane;
+import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 
 public class EnemyPath {
     private List<Point2D> pathPoints; // เก็บจุดทั้งหมดในเส้นทาง
@@ -62,5 +71,100 @@ public class EnemyPath {
         FXGL.getGameScene().addUINode(enemyPath.getPathPolyline());
 
         return enemyPath;
+    }
+    
+    // คลาสสำหรับจัดการพิกัด
+    public static class Coordinate {
+        private double x, y;
+        
+        public Coordinate(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+        
+        public double getExactX() {
+            return x;
+        }
+        
+        public double getExactY() {
+            return y;
+        }
+    }
+    
+    // คลาสสำหรับตรวจสอบการโจมตีของหอคอย
+    private static class TowerAttackerService extends Service<Void> {
+        @Override
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    // ตรวจสอบการโจมตีของหอคอย
+                    return null;
+                }
+            };
+        }
+    }
+    
+    // สร้างและเคลื่อนที่ศัตรูตามเส้นทาง
+    public ImageView createMovingEnemy(Pane monsterLayer, List<ImageView> enemies, List<Coordinate> pathCoords) {
+        Rectangle rectBasicTimeline = new Rectangle(0, 0, 40, 40);
+        monsterLayer.getChildren().add(rectBasicTimeline);
+        
+        // สร้าง ImageView สำหรับศัตรูที่เคลื่อนที่
+        ImageView enemyView = new ImageView();
+        enemyView.setFitWidth(40);
+        enemyView.setFitHeight(40);
+        enemyView.setX(0);
+        enemyView.setY(0);
+        monsterLayer.getChildren().add(enemyView);
+        
+        // เพิ่มศัตรูลงในรายการสำหรับการติดตาม
+        if (enemies != null) {
+            enemies.add(enemyView);
+        }
+
+        // ตรวจสอบหอคอยในระยะ
+        TowerAttackerService testService = new TowerAttackerService();
+        testService.start();
+
+        Path path = new Path();
+        boolean isFirst = true;
+
+        // สร้างเส้นทางจากพิกัดที่กำหนด
+        for (Coordinate coords : pathCoords) {
+            if (isFirst) {
+                path.getElements().add(new MoveTo(coords.getExactX(), coords.getExactY()));
+                isFirst = false;
+            } else {
+                path.getElements().add(new LineTo(coords.getExactX(), coords.getExactY()));
+            }
+        }
+
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(rectBasicTimeline);
+        
+        // ผูกตำแหน่งของ ImageView กับ Rectangle เพื่อการติดตาม
+        rectBasicTimeline.xProperty().addListener((obs, oldVal, newVal) -> {
+            enemyView.setX(newVal.doubleValue());
+        });
+        
+        rectBasicTimeline.yProperty().addListener((obs, oldVal, newVal) -> {
+            enemyView.setY(newVal.doubleValue());
+        });
+        
+        pathTransition.play();
+        
+        return enemyView;
+    }
+    
+    // แปลง Point2D เป็น Coordinate
+    public List<Coordinate> convertPathPointsToCoordinates() {
+        List<Coordinate> coordinates = new ArrayList<>();
+        for (Point2D point : pathPoints) {
+            coordinates.add(new Coordinate(point.getX(), point.getY()));
+        }
+        return coordinates;
     }
 }

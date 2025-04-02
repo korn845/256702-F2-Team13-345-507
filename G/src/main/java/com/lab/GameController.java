@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.util.Duration;
+import javafx.scene.image.ImageView; // Changed import from javax.swing to javafx
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +83,23 @@ public class GameController {
     private void spawnEnemy() {
         Enemy enemy = new Enemy(100, 10); // Enemy with 100 health and speed of 10 seconds
         enemies.add(enemy);
-        enemy.spawnEnemy(gamePane, EnemyPath.generateEnemyPath(800, 600).getPathPolyline());
-
-        // Check if enemy reaches the end
-        enemy.getView().setOnMouseClicked(event -> {
+        
+        // สร้างเส้นทางและแปลงเป็น Coordinate
+        EnemyPath enemyPath = EnemyPath.generateEnemyPath(800, 600);
+        List<EnemyPath.Coordinate> pathCoords = enemyPath.convertPathPointsToCoordinates();
+        
+        // สร้างศัตรูที่เคลื่อนที่ตามเส้นทาง
+        Pane monsterLayer = new Pane();
+        gamePane.getChildren().add(monsterLayer);
+        
+        // สร้างและเคลื่อนที่ศัตรูตามเส้นทาง
+        ImageView enemyView = enemyPath.createMovingEnemy(monsterLayer, new ArrayList<>(), pathCoords);
+        
+        // ตรวจสอบเมื่อคลิกที่ศัตรู
+        enemyView.setOnMouseClicked(event -> {
             enemy.takeDamage(50); // Example: Reduce health by 50 when clicked
             if (enemy.getHealth() <= 0) {
-                gamePane.getChildren().remove(enemy.getView());
+                gamePane.getChildren().remove(monsterLayer);
                 enemies.remove(enemy);
             }
         });
